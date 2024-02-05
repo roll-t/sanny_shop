@@ -1,0 +1,29 @@
+*{
+    box-sizing: border-box;
+}
+
+.table-product td,
+.table-product th {
+    padding: 0;
+    vertical-align: middle;
+    text-align: center;
+    padding: .5%;
+}
+
+.product-name {
+    max-width: 80px;
+    /* Đặt chiều rộng tối đa mà bạn muốn */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Hiển thị dấu ba chấm khi vượt quá chiều rộng */
+    white-space: nowrap;
+    /* Ngăn ngừa các dòng mới */
+}
+.table-product tr:hover{
+    background: #00000008;
+}
+
+.table-product .action div{
+    display: flex;
+    justify-content:space-around;
+}
