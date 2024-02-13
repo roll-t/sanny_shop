@@ -117,8 +117,9 @@ trait QueryBuilder{
         }
         return $this;
     }
+    
     public function getValue(){
-        $sqlQuey="SELECT $this->selectField FROM $this->tableName $this->innerJoin  $this->where $this->limit $this->orderBy";
+        $sqlQuey="SELECT $this->selectField FROM $this->tableName $this->innerJoin  $this->where $this->orderBy $this->limit ";
         $sqlQuey=trim($sqlQuey);
         $query=$this->query($sqlQuey);
         //reset

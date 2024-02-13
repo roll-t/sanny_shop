@@ -1,0 +1,212 @@
+:root{
+    --white: #fff;
+    --primary:#e73874;
+}
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.container-add {
+    position: relative;
+    background: var(--white);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.378);
+    border-radius: 5px;
+    height: 80vh;
+    padding:1% 2%;
+}
+.container-add img {
+    width: 100%;
+}
+.container-add .main{ 
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 2%;
+}
+
+.container-add .title{
+    text-transform: capitalize;
+    font-size: 1.5rem;
+}
+
+
+.container-add .main .left{
+    display: flex;
+    border-radius: 5px;
+    gap:1.5rem;
+    border:1px solid #0000001a;   
+    padding: 1rem;
+}
+.container-add .main .left .col:nth-child(1){
+    flex: 1;
+    flex-basis: 40%;
+}
+.container-add .main .left .col:nth-child(2){
+    flex: 1;
+    flex-basis: 60%;
+}
+.group-input{
+    margin-bottom: 25px;
+}
+.row-list{
+    display: flex;
+    gap: 20px;
+}
+
+.check_{
+    display: flex;
+    gap:5px;
+}
+.list-check{
+    display: grid;
+    margin-top: 10px;
+    grid-template-columns: repeat(4,1fr);
+}
+.list-check:nth-child(2){
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+}
+.group-input input,.group-input select{
+    padding:5px 10px;
+    border-radius: 5px;
+    outline: none;
+    border:1px solid rgba(0, 0, 0, 0.237);
+}
+.container-add .main .part-upload-img{
+    border-radius: 5px;
+    border:1px solid #0000001a;   
+    padding: 1rem;
+}
+
+.container-add .main .part-upload-img .input-avata{
+    display: flex;
+    width: 8rem;
+    height: 8rem;
+    display: inline-block;
+    border:1px dashed var(--primary);
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 5px;
+    align-items: center;
+}
+.container-add .main .part-upload-img .input-avata ion-icon{
+    font-size: 50px;
+}
+.warp-img{
+    display: flex;
+}
+.container-add .main .right{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.container-add .main .group-input{
+    display: flex;
+    flex-direction: column;
+}
+
+.container-add .main .group-input label{
+    margin: 0;
+    margin-bottom: .2rem;
+}
+.container-add .main .part-upload-img{
+    display: flex;
+    gap:2rem;
+}
+.box-img{
+    display: flex;
+    width: 8rem;
+    height: 8rem;
+    display: inline-block;
+    border:1px dashed var(--primary);
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 5px;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.box-img ion-icon{
+    font-size: 50px;
+}
+.container-add  .list-img-add{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+}
+.container-add  .list-img-add .img-items{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.316);
+}
+
+.container-add .right .img-items img{
+    object-fit: cover;
+}
+
+.container-add  .icon-delete{
+    position: absolute;
+    cursor: pointer;
+    top:0;
+    right: 0;
+    background: black;
+    color: white;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100rem;
+}
+
+
+.input-avata{
+    overflow: hidden;
+    position: relative;
+
+}
+.input-avata button{
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border:none;
+    color:var(--white);
+    background: #000;
+    border-radius: 10px;
+    z-index: 1000;
+
+}
+
+.input-avata button.active{
+    display: block;
+}
+
+.input-avata:hover img{
+    opacity: .7;
+}
+.btn_create_product{
+    position: absolute;
+    left: 2%;
+    bottom: 2%;
+    color: var(--white);
+    background: #000;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.352);
+    border: none;
+}
+.btn_create_product:active{
+    opacity: .3;
+}
+.btn_create_product:hover{
+    opacity: .7;
+}

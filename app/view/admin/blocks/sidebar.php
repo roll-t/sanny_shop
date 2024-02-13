@@ -24,10 +24,22 @@
             Products
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="<?php echo _WEB_ROOT.'/admin/product'?>">List Product</a></li>
+            <li><a class="dropdown-item" href="<?php echo _WEB_ROOT?>/admin/product">List Product</a></li>
             <li><a class="dropdown-item" href="<?php echo _WEB_ROOT?>/admin/category">Category</a></li>
             <li><a class="dropdown-item" href="<?php echo _WEB_ROOT?>/admin/material">Material</a></li>
             <li><a class="dropdown-item" href="<?php echo _WEB_ROOT?>/admin/color">Color</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="nav-item">
+        <div class="dropdown nav-link">
+        <i class="material-icons opacity-10 me-2">receipt_long</i>
+          <a class="text-white dropdown-toggle d-flex justify-content-between align-items-center w-100" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+          Import products
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li><a class="dropdown-item" href="<?php echo _WEB_ROOT?>/admin/ImportProduct">Import products</a></li>
+            <li><a class="dropdown-item" href="<?php echo _WEB_ROOT?>/admin/order/billing">Import history</a></li>
           </ul>
         </div>
       </li>
