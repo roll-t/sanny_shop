@@ -20,7 +20,6 @@ $titlePage=[
     'admin/product'=>'Admin sản phẩm',
     'admin/product/add_product'=>'Admin Thêm sản phẩm',
     'admin/product/edit_product'=>'Admin chỉnh sửa sản phẩm',
-    'admin/importProduct'=>'Nhập sản phẩm'
+    'admin/ImportProduct'=>'Nhập sản phẩm'
 ]
-
 ?>

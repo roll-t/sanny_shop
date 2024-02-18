@@ -22,18 +22,19 @@ class Product extends Controller
         $this->list_product();
     }
 
-    function view_product(){
+    function view_product()
+    {
         $id = !empty($_GET['id']) ? $_GET['id'] : 0;
         $this->__data['sub_content']['categorys'] = $this->__model['product']->all("danh_muc");
         $this->__data['sub_content']['materials'] = $this->__model['product']->all("chat_lieu");
         $this->__data['sub_content']['sizes'] = $this->__model['product']->all("size");
         $this->__data['sub_content']['colors'] = $this->__model['product']->all("mau");
 
-        
+
         $product_edit = $this->__model['product']->get_product($id);
-        
-        if(!empty($product_edit[0]['sp_ten'])){
-            $this->__data['sub_content']['title_page'] ='Information product: '.$product_edit[0]['sp_ten'];
+
+        if (!empty($product_edit[0]['sp_ten'])) {
+            $this->__data['sub_content']['title_page'] = 'Information product: ' . $product_edit[0]['sp_ten'];
         }
 
         $this->__data['sub_content']['product_edit'] = $product_edit[0];
@@ -52,8 +53,7 @@ class Product extends Controller
 
         $this->render_view('view_product');
     }
-
-    function list_product()
+    function management_product()
     {
         $this->__model['categorys'] = $this->model('admin/CategoryModel');
 
@@ -74,12 +74,84 @@ class Product extends Controller
 
         $offset_page = ($current_page - 1) * $items_per_page;
 
-        if (!empty($_GET['category_id'])) {
-            $this->__data['sub_content']['list_product'] = $this->__model['product']->list_product_category($items_per_page, $offset_page, $_GET['category_id']);
-        } else if (!empty($_GET['search'])) {
-            $this->__data['sub_content']['list_product'] = $this->__model['product']->list_product_search($items_per_page, $offset_page,$_GET['search']);
-        } else {
-            $this->__data['sub_content']['list_product'] = $this->__model['product']->list_product($items_per_page, $offset_page);
+
+        $inputArray = $this->__model['product']->list_product_manage($items_per_page, $offset_page);
+
+        $uniqueKIds = []; // Mảng tạm để lưu trữ các giá trị khác nhau của k_id
+        
+        $resultArray = []; // Mảng kết quả
+
+        foreach ($inputArray as $item) {
+            // Kiểm tra nếu giá trị của k_id đã xuất hiện trong mảng tạm thì bỏ qua
+            if (!in_array($item['k_id'], $uniqueKIds)) {
+                // Nếu chưa xuất hiện, thêm giá trị này vào mảng kết quả và mảng tạm
+                $resultArray[] = $item;
+                $uniqueKIds[] = $item['k_id'];
+            }
+        }
+
+        if ($total_items != 0) {
+            if (!empty($_GET['category_id'])) {
+                $this->__data['sub_content']['list_product'] = $this->__model['product']->list_product_category($items_per_page, $offset_page, $_GET['category_id']);
+            } else if (!empty($_GET['search'])) {
+                $this->__data['sub_content']['list_product'] = $this->__model['product']->list_product_search($items_per_page, $offset_page, $_GET['search']);
+            } else {
+                $this->__data['sub_content']['list_product'] =  $resultArray;
+            }
+        }
+
+        $this->render_view('management_product');
+    }
+
+    function adjust_status()
+    {
+        if ($_GET['id']) {
+            $product_target = $this->__model['product']->get_product($_GET['id']);
+            $this->__data['sub_content']['product_id'] = $_GET['id'];
+            $this->__data['sub_content']['title_page'] = 'Adjus status product : ' . $product_target[0]['sp_ten'] . ' ( ID: SP' . $_GET['id'] . ' )';
+        }
+        $this->render_view('adjust_status');
+    }
+
+    function emplement_adjust_status()
+    {
+        if ($_GET) {
+            $id = $_GET['sp_id'];
+            $this->__model['import_detail'] = $this->model('admin/importDetailModel');
+            $this->__model['import_detail']->edit($_GET, $id);
+        }
+    }
+
+    function list_product()
+    {
+
+        $this->__model['categorys'] = $this->model('admin/CategoryModel');
+
+        $this->__data['sub_content']['categorys'] = $this->__model['categorys']->all();
+
+        $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+
+        $total_items =  ($this->__model["product"]->count())[0]['count'];
+
+        $items_per_page = 3;
+
+        $total_pages = ceil($total_items / $items_per_page);
+
+        $this->__data["sub_content"]['pagination_data']["total_pages"] = $total_pages;
+
+        // Đảm bảo trang hiện tại không vượt quá số trang tổng cộng
+        $current_page = min($total_pages, max(1, $current_page));
+
+        $offset_page = ($current_page - 1) * $items_per_page;
+
+        if ($total_items != 0) {
+            if (!empty($_GET['category_id'])) {
+                $this->__data['sub_content']['list_product'] = $this->__model['product']->list_product_category($items_per_page, $offset_page, $_GET['category_id']);
+            } else if (!empty($_GET['search'])) {
+                $this->__data['sub_content']['list_product'] = $this->__model['product']->list_product_search($items_per_page, $offset_page, $_GET['search']);
+            } else {
+                $this->__data['sub_content']['list_product'] = $this->__model['product']->list_product($items_per_page, $offset_page);
+            }
         }
         $this->render_view('product');
     }

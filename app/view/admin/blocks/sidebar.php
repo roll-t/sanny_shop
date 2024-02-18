@@ -24,7 +24,8 @@
             Products
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="<?php echo _WEB_ROOT?>/admin/product">List Product</a></li>
+            <li><a class="dropdown-item" href="<?php echo _WEB_ROOT?>/admin/product">Create Product</a></li>
+            <li><a class="dropdown-item" href="<?php echo _WEB_ROOT?>/admin/product/management_product">Products Management</a></li>
             <li><a class="dropdown-item" href="<?php echo _WEB_ROOT?>/admin/category">Category</a></li>
             <li><a class="dropdown-item" href="<?php echo _WEB_ROOT?>/admin/material">Material</a></li>
             <li><a class="dropdown-item" href="<?php echo _WEB_ROOT?>/admin/color">Color</a></li>
@@ -39,7 +40,7 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <li><a class="dropdown-item" href="<?php echo _WEB_ROOT?>/admin/ImportProduct">Import products</a></li>
-            <li><a class="dropdown-item" href="<?php echo _WEB_ROOT?>/admin/order/billing">Import history</a></li>
+            <li><a class="dropdown-item" href="<?php echo _WEB_ROOT?>/admin/ImportProduct/history">Import history</a></li>
           </ul>
         </div>
       </li>

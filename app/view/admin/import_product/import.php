@@ -13,55 +13,56 @@
             chose
         </button>
     </form>
-
 </div>
 <div class="col-md-12 mb-lg-0 mb-4">
-    <div class="card mt-4 p-4">
-        <form method="post" action="<?php echo _WEB_ROOT?>/admin/importProduct/import">
+    <div class="card mt-4 p-4 body-import-items">
+        <form method="post" action="<?php echo _WEB_ROOT ?>/admin/importProduct/import" class="form-import-product" onsubmit="return false">
+        <input type="hidden" name="n_tongtien" value="" class="n_tongtien">
             <?php
-            if (empty($product_handle)) {
+            if (!empty($product_handle)) {
+                echo '<table class="table table-bordered mt-3 table-product">
+            <tr>
+                <th>No</th>
+                <th>Product name</th>
+                <th>Product price</th>
+                <th>color</th>
+                <th>size</th>
+                <th>Quantity</th>
+            </tr>
+            <tbody>';
+
+                if (!empty($product_handle)) {
+                    $count = 0;
+                    foreach ($product_handle as $value) {
+                        $count += 1;
+                        echo '
+            <tr>
+                <td>' . $count . '</td>
+                <td class="product-name">' . $value['sp_ten'] . '</td>
+                <td><span class="price">' .  number_format($value['sp_gia'], 0, ',', '.') . '</span> VND</td>
+                <td class="product-name">' . $value['m_ten'] . '</td>
+                <td class="product-name">' . $value['s_ten'] . '</td>
+                <td style="width:300px">
+                    <input name="sp_id" type="hidden" value="' . $value['sp_id'] . '" >
+                    <input class="quantity-input" name="soluong[]" type="number" value="0" >
+                    <input name="s_id[]" type="hidden" value="' . $value['s_id'] . '">
+                    <input name="m_id[]" type="hidden" value="' . $value['m_id'] . '" >
+                </td>   
+            </tr>';
+                    }
+                }
+                echo '<tr>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
+        <div style="display:flex;justify-content:center;margin-top:30px;">
+        <button class="btn-confirm-import btn btn-dark square centerd">Import Product</button>
+        </div>';
+            } else {
                 echo '<h5 class="text-center">Select the process product below</h5>';
             }
             ?>
-            
-            <table class="table table-bordered mt-3 table-product">
-                <tr>
-                    <th>No</th>
-                    <th>Product name</th>
-                    <th>color</th>
-                    <th>size</th>
-                    <th>Quantity</th>
-                </tr>
-                <tbody>
-                    <?php
-                    if (!empty($product_handle)) {
-                        $count=0;
-                        foreach ($product_handle as $value) {
-                            $count+=1;
-                            echo '
-                            <tr>
-                            <td>'.$count.'</td>
-                            <td class="product-name">' . $value['sp_ten'] . '</td>
-                            <td class="product-name">' . $value['m_ten'] . '</td>
-                            <td class="product-name">' . $value['s_ten'] . '</td>
-                            <td style="width:300px">
-                            <input name="sp_id" type="hidden" value="'.$value['sp_id'].'" >
-                            <input name="soluong[]" type="number">
-                            <input name="s_id[]" type="hidden" value="'.$value['s_id'].'">
-                            <input name="m_id[]" type="hidden" value="'.$value['m_id'].'" >
-                            </td>   
-                        </tr>
-                            ';
-                        }
-                    }
-                    ?>
-                    <tr>
-                        <td></td>
-                    </tr>
-                </tbody>
-                <!-- Bổ sung dữ liệu trong các dòng tiếp theo tại đây -->
-            </table>
-            <button class="center">Import Product</button>
         </form>
     </div>
 
@@ -122,6 +123,7 @@
         })
     </script>
 </div>
+<?php $this->view('admin/components/entry_slip') ?>
 
 <span class="ms-auto">
 

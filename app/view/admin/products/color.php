@@ -24,6 +24,10 @@
                                         <label for="exampleFormControlInput1" class="form-label">color name.</label>
                                         <input name="m_ten" type="text" class="form-control border border-2 p-2 category-name" id="exampleFormControlInput1" placeholder="Enter frist color name">
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-l abel">Color Code.</label>
+                                        <input  name="m_ma"  type="color" class="form-control w-20 border border-2 p-2 category-name" id="exampleFormControlInput1" placeholder="Enter color code">
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <div class="btn" data-bs-dismiss="modal">Close</div>
@@ -44,7 +48,6 @@
                         <div class="col-md-12  cursor-pointer">
                             <div class="card card-body border card-plain border-radius-lg d-flex align-items-center flex-row">
                                 <input class="id-edit" type="hidden" value="'.$value['m_id'].'">
-                                <img class="w-3 me-3 mb-0" src="' . _WEB_ROOT . '/public/admin/img/logos/mastercard.png" alt="logo">
                                 <h6 class="mb-0 dm_ten">' . $value['m_ten'] . '</h6>
                                 <span class="ms-auto">
                                     <a class="edit-category" href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal">

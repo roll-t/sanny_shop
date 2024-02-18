@@ -44,7 +44,6 @@
                         <div class="col-md-12  cursor-pointer">
                             <div class="card card-body border card-plain border-radius-lg d-flex align-items-center flex-row">
                                 <input class="id-edit" type="hidden" value="'.$value['cl_id'].'">
-                                <img class="w-3 me-3 mb-0" src="' . _WEB_ROOT . '/public/admin/img/logos/mastercard.png" alt="logo">
                                 <h6 class="mb-0 dm_ten">' . $value['cl_ten'] . '</h6>
                                 <span class="ms-auto">
                                     <a class="edit-category" href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal">

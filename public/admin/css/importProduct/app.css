@@ -43,3 +43,7 @@
     text-transform: capitalize;
     color:white;
 }
+
+.btn-confirm-import{
+    border: 1px solid #000;
+}

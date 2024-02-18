@@ -1,47 +1,60 @@
 <?php
-trait QueryBuilder{
-    public $tableName='';
-    public $where='';
-    public $operator='';
-    public $selectField='*';
-    public $limit='';
-    public $orderBy='';
-    public $innerJoin='';
-    public $count=false;
+trait QueryBuilder
+{
+    public $tableName = '';
+    public $where = '';
+    public $operator = '';
+    public $selectField = '*';
+    public $limit = '';
+    public $orderBy = '';
+    public $innerJoin = '';
+    public $count = false;
+    public $distinct = false;
 
-    public function table($tableName){
-        $this->tableName=$tableName;
+    public function table($tableName)
+    {
+        $this->tableName = $tableName;
         return $this;
     }
 
-    
-    public function where($field,$compare,$value){
-        if(empty($this->where)){
-            $this->operator='WHERE';
-        }else{
-            $this->operator=' AND';
+
+    public function where($field, $compare, $value)
+    {
+        if (empty($this->where)) {
+            $this->operator = 'WHERE';
+        } else {
+            $this->operator = ' AND';
         }
-        $this->where.= "$this->operator $field $compare '$value'";
+        $this->where .= "$this->operator $field $compare '$value'";
         return $this;
     }
 
-    public function select($field='*'){
+    public function select($field = '*')
+    {
         $this->selectField = $field;
         return $this;
-
     }
-    public function orWhere($field,$compare,$value){
-        if(empty($this->where)){
-            $this->operator='WHERE';
-        }else{
-            $this->operator=' OR';
+    // Phương thức để kích hoạt hoặc vô hiệu hóa DISTINCT
+    public function distinct($value = true)
+    {
+        $this->distinct = $value;
+        return $this;
+    }
+
+    public function orWhere($field, $compare, $value)
+    {
+        if (empty($this->where)) {
+            $this->operator = 'WHERE';
+        } else {
+            $this->operator = ' OR';
         }
-        $this->where.= "$this->operator $field $compare '$value'";
+        $this->where .= "$this->operator $field $compare '$value'";
         return $this;
     }
 
 
-    public function whereLike($field, $value) {
+    public function whereLike($field, $value)
+    {
         if (empty($this->where)) {
             $this->operator = 'WHERE';
         } else {
@@ -49,7 +62,7 @@ trait QueryBuilder{
         }
 
         $this->where = trim($this->where);
-    
+
         // Kiểm tra xem điều kiện WHERE đã tồn tại hay chưa
         if (empty($this->where)) {
             $this->where .= "$this->operator $field LIKE '$value'";
@@ -58,101 +71,114 @@ trait QueryBuilder{
         }
         return $this;
     }
-    
+
     // 50 
     // 0, 10 ;
     // 10, 10 ;
-    public function limit($number,$offset=0){
-        $this->limit='LIMIT '.$offset.', '.$number.' ';
+    public function limit($number, $offset = 0)
+    {
+        $this->limit = 'LIMIT ' . $offset . ', ' . $number . ' ';
         return $this;
     }
 
     //OrderBy 
-    public function orderBy($field,$type ='ASC'){
-        $arrField=array_filter(explode(',',$field));
-        if(!empty($arrField) && count($arrField)>=2){
+    public function orderBy($field, $type = 'ASC')
+    {
+        $arrField = array_filter(explode(',', $field));
+        if (!empty($arrField) && count($arrField) >= 2) {
             //sql orderby
-            $this->orderBy='ORDER BY'.implode(', ',$arrField);
-        }else{
-            $this->orderBy='ORDER BY '.$field.' '.$type;
+            $this->orderBy = 'ORDER BY' . implode(', ', $arrField);
+        } else {
+            $this->orderBy = 'ORDER BY ' . $field . ' ' . $type;
         }
         return $this;
     }
     //inner join
-    public function join($tableName,$relationShip){
-        $this->innerJoin.=' INNER JOIN '.$tableName.' ON '.$relationShip.' ';
+    public function join($tableName, $relationShip)
+    {
+        $this->innerJoin .= ' INNER JOIN ' . $tableName . ' ON ' . $relationShip . ' ';
         return $this;
     }
 
-    public function insert($data){
-        $tableName=$this->tableName;
-        $insertStatus=$this->insert_db($tableName,$data);
+    public function insert($data)
+    {
+        $tableName = $this->tableName;
+        $insertStatus = $this->insert_db($tableName, $data);
         return $insertStatus;
     }
 
-    public function lastId(){
+    public function lastId()
+    {
         return $this->lastInsertId();
     }
 
-    
-    public function update($data){
-        $whereUpdate=str_replace('WHERE',' ',$this->where);
-        $whereUpdate=trim($whereUpdate);
-        $tableName=$this->tableName;
-        $statusUpdate=$this->update_db($tableName,$data,$whereUpdate);
+
+    public function update($data)
+    {
+        $whereUpdate = str_replace('WHERE', ' ', $this->where);
+        $whereUpdate = trim($whereUpdate);
+        $tableName = $this->tableName;
+        $statusUpdate = $this->update_db($tableName, $data, $whereUpdate);
         return $statusUpdate;
     }
-    public function delete(){
-        $whereDelete=str_replace('WHERE',' ',$this->where);
-        $whereDelete=trim($whereDelete);
-        $tableName=$this->tableName;
-        $statusDelete=$this->delete_db($tableName,$whereDelete);
+    public function delete()
+    {
+        $whereDelete = str_replace('WHERE', ' ', $this->where);
+        $whereDelete = trim($whereDelete);
+        $tableName = $this->tableName;
+        $statusDelete = $this->delete_db($tableName, $whereDelete);
         return $statusDelete;
     }
 
-    public function count(){
-        $count=true;
-        if($count){
+    public function count()
+    {
+        $count = true;
+        if ($count) {
             $this->selectField = 'COUNT(*) as count';
         }
         return $this;
     }
-    
-    public function getValue(){
-        $sqlQuey="SELECT $this->selectField FROM $this->tableName $this->innerJoin  $this->where $this->orderBy $this->limit ";
-        $sqlQuey=trim($sqlQuey);
-        $query=$this->query($sqlQuey);
+
+    public function getValue()
+    {
+        $distinctClause = $this->distinct ? 'DISTINCT' : '';
+        $sqlQuey = "SELECT $distinctClause $this->selectField FROM $this->tableName $this->innerJoin  $this->where $this->orderBy $this->limit ";
+        $sqlQuey = trim($sqlQuey);
+        $query = $this->query($sqlQuey);
         //reset
         $this->resetQuery();
-        if(!empty($query)){
+        if (!empty($query)) {
             return $query->fetchAll(PDO::FETCH_ASSOC);
-        }else{
+        } else {
             return false;
         }
     }
     // select * or '' form  'table' where id = 1....;
-    public function first(){
-        $sqlQuey="SELECT $this->selectField FROM $this->tableName $this->where $this->limit";
-        $query=$this->query($sqlQuey);
+    public function first()
+    {
+        $sqlQuey = "SELECT $this->selectField FROM $this->tableName $this->where $this->limit";
+        $query = $this->query($sqlQuey);
         //reset
         $this->resetQuery();
-        if(!empty($query)){
+        if (!empty($query)) {
             return $query->fetchAll(PDO::FETCH_ASSOC);
-        }else{
+        } else {
             return false;
         }
     }
-    public function showError($mess){
-        App::$app->loadError('database', ['mess'=>$mess]);
+    public function showError($mess)
+    {
+        App::$app->loadError('database', ['mess' => $mess]);
     }
-    public function resetQuery(){
-        $this->tableName='';
-        $this->where='';
-        $this->operator='';
-        $this->selectField='*';
-        $this->limit='';
-        $this->orderBy='';
-        $this->count=false;
+    public function resetQuery()
+    {
+        $this->tableName = '';
+        $this->where = '';
+        $this->operator = '';
+        $this->selectField = '*';
+        $this->limit = '';
+        $this->orderBy = '';
+        $this->count = false;
+        $this->distinct=false;
     }
-    
 }

@@ -58,8 +58,6 @@ class ProductModel extends Model{
 
     function list_product_import($id=0){
         return $this->db->table($this->tableFill())
-        // ->join('hinh_anh', 'hinh_anh.sp_id = san_pham.sp_id')
-        // ->join('danh_muc', 'danh_muc.dm_id = san_pham.dm_id')
         ->join('ct_sanpham', 'san_pham.sp_id = ct_sanpham.sp_id')
         ->join('ct_mau', 'san_pham.sp_id = ct_mau.sp_id')
         ->join('mau', 'ct_mau.m_id = mau.m_id')
@@ -67,6 +65,19 @@ class ProductModel extends Model{
         ->join('size', 'size.s_id = ct_size.s_id')
         ->where('san_pham.sp_id', '=', $id)
         ->getValue();
+    }
+
+    function list_product_manage(){
+        return $this->db->table($this->tableFill())
+            ->join('ct_sanpham', 'san_pham.sp_id = ct_sanpham.sp_id')
+            ->join('ct_mau', 'san_pham.sp_id = ct_mau.sp_id')
+            ->join('mau', 'ct_mau.m_id = mau.m_id')
+            ->join('ct_size', 'san_pham.sp_id = ct_size.sp_id')
+            ->join('size', 'size.s_id = ct_size.s_id')
+            ->join('ct_nhap','ct_nhap.sp_id=san_pham.sp_id and ct_nhap.m_id=mau.m_id and ct_nhap.s_id=size.s_id')
+            ->join('kho','kho.k_id=ct_nhap.k_id')
+            ->orderBy('san_pham.sp_id','DESC')
+            ->getValue();   
     }
 
 }
