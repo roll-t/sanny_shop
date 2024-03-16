@@ -180,7 +180,6 @@ function validate() {
         }
 
         const count_size=count_check('.list-check-size .check_ input')
-        const count_color=count_check('.list-check-color .check_ input')
         const emp_name=check_empty(".group-input.name_product input")
         const emp_price=check_empty(".group-input.price_product input")
         const emp_category=check_empty('.group-input.category select')
@@ -206,11 +205,6 @@ function validate() {
 
         if(count_size==0){
             alert("Select at least 1 size !")
-            return;
-        }
-
-        if(count_color==0){
-            alert("Select at least 1 color !")
             return;
         }
 

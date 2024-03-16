@@ -11,6 +11,7 @@ $routes['trang-chu']='home';
 $titlePage=[
     'index'=>"trang chủ",
     'home'=>'trang chủ',
+    'order'=>'Thanh toán - sany',
     'product'=>'sản phẩm',
     'account'=>'đăng nhập',
     'account/sign_up'=>'đăng ký',
@@ -20,6 +21,7 @@ $titlePage=[
     'admin/product'=>'Admin sản phẩm',
     'admin/product/add_product'=>'Admin Thêm sản phẩm',
     'admin/product/edit_product'=>'Admin chỉnh sửa sản phẩm',
-    'admin/ImportProduct'=>'Nhập sản phẩm'
+    'admin/ImportProduct'=>'Nhập sản phẩm',
+    'admin/product/management_product'=>'quản lý sản phẩm'
 ]
 ?>

@@ -44,6 +44,10 @@ function custom_name($list = [])
     return $name;
 }
 
+function render_array_img($value){
+    return explode('|',$value);
+}
+
 // hàm đổi tên ảnh trước khi đưa vào thư mục chỉ định
 function generateUniqueFilename($filename, $uploadDir, $prefix)
 {
@@ -62,6 +66,18 @@ function auto_import_css()
     $__root_css = $url[1];
     $__file_css = !empty($url[2]) ? $url[2] : "app";
     echo '<link rel="stylesheet" href="' . _WEB_ROOT . '/public/admin/css/' . $__root_css . '/' . $__file_css . '.css">';
+}
+function auto_import_css_client()
+{
+    $url = App::$app->getUrl();
+    $url = explode('/', $url);
+    $url = array_filter($url);
+    $url = array_values($url);
+    if(!empty( $url[0])){
+        $__root_css = $url[0];
+        $__file_css = !empty($url[1]) ? $url[1] : "app";
+        echo '<link rel="stylesheet" href="' . _WEB_ROOT . '/public/client/css/' . $__root_css . '/' . $__file_css . '.css">';
+    }
 }
 
 function auto_import_js()

@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="<?php echo _WEB_ROOT?>/public/client/css/slide/slide-slip.css">
 <link rel="stylesheet" href="<?php echo _WEB_ROOT?>/public/client/css/product/view_product.css">
 <link rel="stylesheet" href="<?php echo _WEB_ROOT?>/public/client/css/product/list_product.css">
+
 <div class="banner">
     <div class="slide">
         <div class="slide-items">

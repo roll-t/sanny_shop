@@ -5,15 +5,16 @@
         <div class="to-sign-up">
             <span>Bạn chưa có tài khoản?</span><a href="<?php echo _WEB_ROOT.'/account/sign_up';?>">Đăng ký</a>
         </div>
+        <input type="hidden" class="__WEB_ROOT" value="<?php echo _WEB_ROOT?>">
         <div class="form-login">
-            <form  class="from-login" method="post" action="./index.php">
+            <form  class="from-login" method="post" onsubmit="return false" action="<?php echo _WEB_ROOT;?>/account/handle_login">
                 <div class="group-input">
-                    <input type="text" name="userName" placeholder="Tên đăng nhập" class="user-name input-login">
+                    <input type="text" name="kh_taikhoan" placeholder="Tên đăng nhập" class="user-name input-login">
                     <span class="erorr"></span>
                     <div class="line"></div>
                 </div>
                 <div class="group-input">
-                    <input type="password" name="password" placeholder="Mật khẩu" class="user-name input-password">
+                    <input type="password" name="kh_matkhau" placeholder="Mật khẩu" class="user-name input-password">
                     <span class="erorr"></span>
                     <div class="line"></div>
                 </div>
@@ -30,6 +31,5 @@
         </div>
     </div>
 </div>
-
 <script src='<?php echo _WEB_ROOT?>/public/client/js/account/Validate.js'></script>
 <script src='<?php echo _WEB_ROOT?>/public/client/js/account/login.js'></script>

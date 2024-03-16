@@ -5,6 +5,7 @@ abstract class Model extends Database
 {
     protected $db;
     private $response;
+    
     function __construct()
     {
         $this->db = new Database();

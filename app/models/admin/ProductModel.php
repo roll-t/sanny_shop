@@ -53,31 +53,52 @@ class ProductModel extends Model{
         ->join('danh_muc',"danh_muc.dm_id=san_pham.dm_id")
         ->join('ct_sanpham',"san_pham.sp_id=ct_sanpham.sp_id")
         ->join("chat_lieu","chat_lieu.cl_id=ct_sanpham.cl_id")
+        ->join("mau","mau.m_id=ct_sanpham.m_id")
         ->where('san_pham.sp_id','=',$id)->getValue();
     }
 
     function list_product_import($id=0){
         return $this->db->table($this->tableFill())
         ->join('ct_sanpham', 'san_pham.sp_id = ct_sanpham.sp_id')
-        ->join('ct_mau', 'san_pham.sp_id = ct_mau.sp_id')
-        ->join('mau', 'ct_mau.m_id = mau.m_id')
+        ->join('mau', 'ct_sanpham.m_id = mau.m_id')
         ->join('ct_size', 'san_pham.sp_id = ct_size.sp_id')
         ->join('size', 'size.s_id = ct_size.s_id')
         ->where('san_pham.sp_id', '=', $id)
         ->getValue();
     }
 
-    function list_product_manage(){
+    function list_product_manage($number=5,$offset=1){
         return $this->db->table($this->tableFill())
             ->join('ct_sanpham', 'san_pham.sp_id = ct_sanpham.sp_id')
-            ->join('ct_mau', 'san_pham.sp_id = ct_mau.sp_id')
-            ->join('mau', 'ct_mau.m_id = mau.m_id')
-            ->join('ct_size', 'san_pham.sp_id = ct_size.sp_id')
-            ->join('size', 'size.s_id = ct_size.s_id')
-            ->join('ct_nhap','ct_nhap.sp_id=san_pham.sp_id and ct_nhap.m_id=mau.m_id and ct_nhap.s_id=size.s_id')
-            ->join('kho','kho.k_id=ct_nhap.k_id')
-            ->orderBy('san_pham.sp_id','DESC')
+            ->join("danh_muc",'danh_muc.dm_id=san_pham.dm_id')
+            ->join('mau', 'ct_sanpham.m_id = mau.m_id')
+            ->join('kho','san_pham.sp_id=kho.sp_id')
+            ->join('size', 'kho.s_id = size.s_id')
+            ->limit($number,$offset)
             ->getValue();   
     }
 
+    function list_product_manage_search($number=5,$offset=1,$search_value=false){
+        return $this->db->table($this->tableFill())
+            ->join('ct_sanpham', 'san_pham.sp_id = ct_sanpham.sp_id')
+            ->join("danh_muc",'danh_muc.dm_id=san_pham.dm_id')
+            ->join('mau', 'ct_sanpham.m_id = mau.m_id')
+            ->whereLike('san_pham.sp_ten','%'.$search_value.'%')
+            ->join('kho','san_pham.sp_id=kho.sp_id')
+            ->join('size', 'kho.s_id = size.s_id')
+            ->limit($number,$offset)
+            ->getValue();   
+    }
+    
+    function list_product_manage_category($number=5,$offset=1,$condition=false){
+        return $this->db->table($this->tableFill())
+            ->join('ct_sanpham', 'san_pham.sp_id = ct_sanpham.sp_id')
+            ->join("danh_muc",'danh_muc.dm_id=san_pham.dm_id')
+            ->join('mau', 'ct_sanpham.m_id = mau.m_id')
+            ->join('kho','san_pham.sp_id=kho.sp_id')
+            ->join('size', 'kho.s_id = size.s_id')
+            ->where('danh_muc.dm_id','=',$condition)
+            ->limit($number,$offset)
+            ->getValue();   
+    }
 }

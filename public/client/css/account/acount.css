@@ -51,6 +51,11 @@
 .group-input input:focus ~ .line{
     width:100%;
 }
+
+.group-input .line.active{
+    width:100%;
+    background: red;
+}
 .group-input .erorr{
     width:100%;
     left:0;

@@ -22,6 +22,7 @@
             <tr>
                 <th>Code</th>
                 <th>Product name</th>
+                <th>Category</th>
                 <th>Product price</th>
                 <th>Color</th>  
                 <th>Size</th>
@@ -39,6 +40,7 @@
                         <tr>
                         <td>SP ' . $value['sp_id'] . '</td>
                         <td class="product-name">' . $value['sp_ten'] . '</td>
+                        <td>'.$value['dm_ten'].'</td>
                         <td>' .  number_format($value['sp_gia'], 0, ',', '.') . ' VND</td>
                         <td  style="color:'.$value['m_ma'].'">' . $value['m_ten'] . '</td>
                         <td >' . $value['s_ten'] . '</td>

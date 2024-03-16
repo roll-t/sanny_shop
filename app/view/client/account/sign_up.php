@@ -3,29 +3,35 @@
     <div class="main-body">
         <h2 class="title">Đăng ký tài khoản</h2>
         <div class="form-sign-up">
-            <form onsubmit="return false" class="form-value-sign-up" method='post' action="./php/account/sign_up.php">
+            <input type="hidden" class="__WEB_ROOT" value="<?php echo _WEB_ROOT?>">
+            <form onsubmit="return false" class="form-value-sign-up" method='post' action="<?php _WEB_ROOT?>/account/handle_sign_up">
                 <div class="group-input">
-                    <input type="text" name="userName" placeholder="Họ Tên" class="user-name input-signup">
+                    <input type="text" name="kh_ten" placeholder="Họ và Tên" class="user-name input-signup">
                     <span class="erorr"></span>
                     <div class="line"></div>
                 </div>
                 <div class="group-input">
-                    <input type="mail" name="mail" placeholder="Email" class="mail input-signup">
+                    <input type="text" name="kh_taikhoan" placeholder="Tên Đăng nhập" class="user-name input-signup">
                     <span class="erorr"></span>
                     <div class="line"></div>
                 </div>
                 <div class="group-input">
-                    <input type="text" name="phone" placeholder="Số điện thoại" class="phone input-signup">
+                    <input type="mail" name="kh_email" placeholder="Email" class="mail input-signup">
                     <span class="erorr"></span>
                     <div class="line"></div>
                 </div>
                 <div class="group-input">
-                    <input type="password" name="password" placeholder="Mật khẩu" class="password input-signup">
+                    <input type="text" name="kh_sdt" placeholder="Số điện thoại" class="phone input-signup">
                     <span class="erorr"></span>
                     <div class="line"></div>
                 </div>
                 <div class="group-input">
-                    <input type="password" name="pwConfirm" placeholder="Nhập lại mật khẩu" class="pw-confirm input-signup">
+                    <input type="password" name="kh_matkhau" placeholder="Mật khẩu" class="password input-signup">
+                    <span class="erorr"></span>
+                    <div class="line"></div>
+                </div>
+                <div class="group-input">
+                    <input type="password" name="passwordConfirm" placeholder="Nhập lại mật khẩu" class="pw-confirm input-signup">
                     <span class="erorr"></span>
                     <div class="line"></div>
                 </div>
@@ -41,5 +47,4 @@
         </div>
     </div>
 </div>
-<script src='<?php echo _WEB_ROOT?>/public/client/js/account/Validate.js'></script>
 <script src='<?php echo _WEB_ROOT?>/public/client/js/account/sign_up.js'></script>

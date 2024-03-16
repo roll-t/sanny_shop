@@ -25,11 +25,14 @@ class Product extends Controller
     function view_product()
     {
         $id = !empty($_GET['id']) ? $_GET['id'] : 0;
-        $this->__data['sub_content']['categorys'] = $this->__model['product']->all("danh_muc");
-        $this->__data['sub_content']['materials'] = $this->__model['product']->all("chat_lieu");
-        $this->__data['sub_content']['sizes'] = $this->__model['product']->all("size");
-        $this->__data['sub_content']['colors'] = $this->__model['product']->all("mau");
 
+        $this->__data['sub_content']['categorys'] = $this->__model['product']->all("danh_muc");
+
+        $this->__data['sub_content']['materials'] = $this->__model['product']->all("chat_lieu");
+
+        $this->__data['sub_content']['sizes'] = $this->__model['product']->all("size");
+
+        $this->__data['sub_content']['colors'] = $this->__model['product']->all("mau");
 
         $product_edit = $this->__model['product']->get_product($id);
 
@@ -39,15 +42,10 @@ class Product extends Controller
 
         $this->__data['sub_content']['product_edit'] = $product_edit[0];
 
-        $this->__model['color_detail'] = $this->model('admin/ColorDetailModel');
 
         $this->__model['size_detail'] = $this->model('admin/SizeDetailModel');
 
-        $color_product = $this->__model['color_detail']->get_color_product($id);
-
         $size_product = $this->__model['size_detail']->get_size_product($id);
-
-        $this->__data['sub_content']['color_product'] = $color_product;
 
         $this->__data['sub_content']['size_product'] = $size_product;
 
@@ -55,15 +53,20 @@ class Product extends Controller
     }
     function management_product()
     {
+
         $this->__model['categorys'] = $this->model('admin/CategoryModel');
 
         $this->__data['sub_content']['categorys'] = $this->__model['categorys']->all();
 
+        $this->__model['storeHouseModel'] = $this->model('admin/storeHouseModel');
+
+        $count = $this->__model['storeHouseModel']->count();
+
         $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
-        $total_items =  ($this->__model["product"]->count())[0]['count'];
+        $total_items =  $count[0]['count'];
 
-        $items_per_page = 3;
+        $items_per_page = 10;
 
         $total_pages = ceil($total_items / $items_per_page);
 
@@ -74,31 +77,30 @@ class Product extends Controller
 
         $offset_page = ($current_page - 1) * $items_per_page;
 
-
-        $inputArray = $this->__model['product']->list_product_manage($items_per_page, $offset_page);
-
         $uniqueKIds = []; // Mảng tạm để lưu trữ các giá trị khác nhau của k_id
-        
-        $resultArray = []; // Mảng kết quả
 
-        foreach ($inputArray as $item) {
-            // Kiểm tra nếu giá trị của k_id đã xuất hiện trong mảng tạm thì bỏ qua
-            if (!in_array($item['k_id'], $uniqueKIds)) {
-                // Nếu chưa xuất hiện, thêm giá trị này vào mảng kết quả và mảng tạm
-                $resultArray[] = $item;
-                $uniqueKIds[] = $item['k_id'];
-            }
-        }
+        $resultArray = []; // Mảng kết quả
 
         if ($total_items != 0) {
             if (!empty($_GET['category_id'])) {
-                $this->__data['sub_content']['list_product'] = $this->__model['product']->list_product_category($items_per_page, $offset_page, $_GET['category_id']);
+                $resultArray = $this->__model['product']->list_product_manage_category($items_per_page, $offset_page, $_GET['category_id']);
             } else if (!empty($_GET['search'])) {
-                $this->__data['sub_content']['list_product'] = $this->__model['product']->list_product_search($items_per_page, $offset_page, $_GET['search']);
+                $resultArray = $this->__model['product']->list_product_manage_search($items_per_page, $offset_page, $_GET['search']);
             } else {
-                $this->__data['sub_content']['list_product'] =  $resultArray;
+                $resultArray = $this->__model['product']->list_product_manage($items_per_page, $offset_page);
             }
         }
+
+        // foreach ($inputArray as $item) {
+        //     // Kiểm tra nếu giá trị của k_id đã xuất hiện trong mảng tạm thì bỏ qua
+        //     if (!in_array($item['k_id'], $uniqueKIds)) {
+        //         // Nếu chưa xuất hiện, thêm giá trị này vào mảng kết quả và mảng tạm
+        //         $resultArray[] = $item;
+        //         $uniqueKIds[] = $item['k_id'];
+        //     }
+        // }
+
+        $this->__data['sub_content']['list_product'] =  $resultArray;
 
         $this->render_view('management_product');
     }
@@ -170,9 +172,13 @@ class Product extends Controller
     function edit_product()
     {
         $id = !empty($_GET['id']) ? $_GET['id'] : 0;
+
         $this->__data['sub_content']['categorys'] = $this->__model['product']->all("danh_muc");
+
         $this->__data['sub_content']['materials'] = $this->__model['product']->all("chat_lieu");
+
         $this->__data['sub_content']['sizes'] = $this->__model['product']->all("size");
+
         $this->__data['sub_content']['colors'] = $this->__model['product']->all("mau");
 
         $this->__data['sub_content']['title_page'] = "Edit Product";
@@ -185,11 +191,7 @@ class Product extends Controller
 
         $this->__model['size_detail'] = $this->model('admin/SizeDetailModel');
 
-        $color_product = $this->__model['color_detail']->get_color_product($id);
-
         $size_product = $this->__model['size_detail']->get_size_product($id);
-
-        $this->__data['sub_content']['color_product'] = $color_product;
 
         $this->__data['sub_content']['size_product'] = $size_product;
 
@@ -200,7 +202,7 @@ class Product extends Controller
     {
         if (!empty($_POST)) {
 
-            $list_require = ['dm_id', 'sp_ten', 'sp_gia', 'anh_chinh', 'ds_anh', 'cl_id', 'size', 'color'];
+            $list_require = ['dm_id', 'sp_ten', 'sp_gia', 'anh_chinh', 'ds_anh', 'cl_id', 'size', 'm_id'];
 
             //Check dữ liệu require của post
             function check_post($list_require)
@@ -267,7 +269,6 @@ class Product extends Controller
             if (check_post($list_require) && !empty($_POST['anh_chinh']) && !empty($_POST['anh_sub'])) {
                 $this->__model["product_detail"] = $this->model('admin/ProductDetailModel');
                 $this->__model["image"] = $this->model('admin/ImgModel');
-                $this->__model["color"] = $this->model('admin/ColorDetailModel');
                 $this->__model["size"] = $this->model('admin/SizeDetailModel');
 
                 $data_product['dm_id'] = $_POST['dm_id'];
@@ -279,7 +280,9 @@ class Product extends Controller
 
                 $data_product_detail['sp_id'] = $lastId;
                 $data_product_detail['cl_id'] = $_POST['cl_id'];
+                $data_product_detail['m_id'] = $_POST['m_id'];
                 $data_product_detail['mota'] = $_POST['mota'];
+
                 $this->__model["product_detail"]->add($data_product_detail, false);
 
                 if (!empty($_POST['size'])) {
@@ -287,14 +290,6 @@ class Product extends Controller
                         $data_size_product['sp_id'] = $lastId;
                         $data_size_product['s_id'] = $value;
                         $this->__model["size"]->add($data_size_product, false);
-                    }
-                }
-
-                if (!empty($_POST['color'])) {
-                    foreach ($_POST['color'] as $value) {
-                        $data_color_product['sp_id'] = $lastId;
-                        $data_color_product['m_id'] = $value;
-                        $this->__model["color"]->add($data_color_product, false);
                     }
                 }
 
@@ -306,6 +301,7 @@ class Product extends Controller
                 $data_img_product['avatar'] = $uploadedImages['avatar'][0];
                 $data_img_product['sub_avatar'] = $uploadedImages['sub_avatar'][0];
                 $data_img_product["list_img"] = $list_name_des;
+                $data_img_product["m_id"] = $_POST['m_id'];
 
                 $this->__model["image"]->add($data_img_product);
             } else {
@@ -357,7 +353,7 @@ class Product extends Controller
     {
         if (!empty($_POST)) {
 
-            $list_require = ['sp_ten', 'sp_gia',  'size', 'color'];
+            $list_require = ['sp_ten', 'sp_gia'];
 
             //Check dữ liệu require của post
             function check_post($list_require)
@@ -370,7 +366,6 @@ class Product extends Controller
 
                 $this->__model["product_detail"] = $this->model('admin/ProductDetailModel');
                 $this->__model["image"] = $this->model('admin/ImgModel');
-                $this->__model["color"] = $this->model('admin/ColorDetailModel');
                 $this->__model["size"] = $this->model('admin/SizeDetailModel');
 
                 $product_id = !empty($_POST['sp_id']) ? $_POST['sp_id'] : 0;
@@ -388,16 +383,6 @@ class Product extends Controller
                         $data_size_product['sp_id'] = $product_id;
                         $data_size_product['s_id'] = $value;
                         $this->__model["size"]->add($data_size_product, false);
-                    }
-                }
-
-                $delete_color_success = $this->__model["color"]->delete($product_id, false);
-
-                if (!empty($_POST['color']) && $delete_color_success) {
-                    foreach ($_POST['color'] as $value) {
-                        $data_color_product['sp_id'] = $product_id;
-                        $data_color_product['m_id'] = $value;
-                        $this->__model["color"]->add($data_color_product, false);
                     }
                 }
 
@@ -487,9 +472,6 @@ class Product extends Controller
                     if (!empty($_FILES)) {
                         $uploadedImages = moveImagesToProductFolder($_FILES);
                     }
-                    echo '<pre>';
-                    print_r($uploadedImages);
-                    echo '</pre>';
 
                     if (!empty($data_img['avatar'])) {
                         $list_img_delete['avatar'] = $current_product['avatar'];
@@ -507,9 +489,6 @@ class Product extends Controller
                         $arr_2 = explode("|", $list_2);
                         return array_intersect($arr_1, $arr_2);
                     }
-                    echo '<pre>';
-                    print_r($data_img);
-                    echo '</pre>';
 
                     function findDifferentElements($array1, $array2)
                     {
@@ -526,7 +505,6 @@ class Product extends Controller
                             $data_img['list_img'] = implode('|', $list_img_save);
                         }
                     }
-
                     if (!empty($list_img_delete["list_img"])) {
                         $folderPath = _DIR_ROOT . '/public/imgs/product/';
                         // Lặp qua tất cả các tệp trong thư mục
@@ -553,7 +531,9 @@ class Product extends Controller
 
                     $this->__model["image"]->edit($data_img, $product_id, false);
                 }
-                if (!empty($_POST['cl_id'])) $data_product_detail['cl_id'] = $_POST['cl_id'];
+
+                if(!empty($_POST['cl_id'])) $data_product_detail['cl_id'] = $_POST['cl_id'];
+                if(!empty($_POST['m_id'])) $data_product_detail['m_id'] = $_POST['m_id'];
                 $data_product_detail['mota'] = $_POST['mota'];
                 $this->__model["product_detail"]->edit($data_product_detail, $product_id);
             } else {

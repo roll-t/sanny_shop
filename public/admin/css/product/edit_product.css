@@ -20,8 +20,8 @@
 }
 .container-add .main{ 
     display: grid;
-    grid-template-columns: 3fr 2fr;
-    gap: 2%;
+    grid-template-columns: 3.5fr 3fr;
+    gap: 5%;
 }
 
 .container-add .title{
@@ -48,9 +48,10 @@
 .group-input{
     margin-bottom: 25px;
 }
+
 .row-list{
     display: flex;
-    gap: 20px;
+    flex-direction: column;
 }
 
 .check_{

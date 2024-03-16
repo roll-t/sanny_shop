@@ -70,3 +70,48 @@ class ToggleIList{
         }
     }
 }
+
+function toggleList(list,class_='active'){
+    list.forEach(items=>{
+        items.addEventListener('click',e=>{
+            list.forEach(items=>{
+                items.classList.remove(class_)
+            })
+            items.classList.add(class_)
+        })
+    })
+}
+
+function toggleBody(body,show,btnClose,spaceClose,nameClass_='active'){
+    show.addEventListener('click',e=>{
+        body.classList.add(nameClass_)
+    })
+    btnClose.addEventListener('click',e=>{
+        body.classList.remove(nameClass_)
+    })
+    spaceClose.addEventListener('click',e=>{
+        body.classList.remove(nameClass_)
+    })
+}
+
+
+
+function input_quantity(mius,number,plus){
+    var regex_numer = /^[0-9]+$/;
+    let quantity=0;
+    mius.addEventListener("click",e=>{
+        if(quantity>0){
+            quantity--
+        }
+        number.value=quantity
+    })
+    plus.addEventListener("click",e=>{
+        quantity++
+        number.value=quantity
+    })
+    number.addEventListener('focusout',e=>{
+        if(!regex_numer.test(number.value)){
+            number.value=0
+        }
+    })
+}

@@ -10,7 +10,6 @@ trait QueryBuilder
     public $innerJoin = '';
     public $count = false;
     public $distinct = false;
-
     public function table($tableName)
     {
         $this->tableName = $tableName;
@@ -111,8 +110,6 @@ trait QueryBuilder
     {
         return $this->lastInsertId();
     }
-
-
     public function update($data)
     {
         $whereUpdate = str_replace('WHERE', ' ', $this->where);
@@ -121,6 +118,7 @@ trait QueryBuilder
         $statusUpdate = $this->update_db($tableName, $data, $whereUpdate);
         return $statusUpdate;
     }
+    
     public function delete()
     {
         $whereDelete = str_replace('WHERE', ' ', $this->where);
@@ -138,7 +136,7 @@ trait QueryBuilder
         }
         return $this;
     }
-
+    
     public function getValue()
     {
         $distinctClause = $this->distinct ? 'DISTINCT' : '';

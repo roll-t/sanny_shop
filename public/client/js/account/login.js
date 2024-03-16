@@ -1,94 +1,106 @@
-function login(){
-    const validate=new Validate()    
-    const listInput=document.querySelectorAll('.group-input input')
-    const btnLogin=document.querySelector('.btn-login')
-    const formLogin=document.querySelector('.form-login')
-    const database=JSON.parse(localStorage.getItem('account_sanny'))
-    const listAccount=database?database:[]
-    const remember=document.querySelector('.remember input');
-    const checkAccountLogin=document.querySelector('.handle-value')
-    let checkDatabase='';
-    const checkLogin={
-        name:'',
-        pw:''
+function login() {
+
+    const listInput = document.querySelectorAll(".form-login .group-input input")
+
+    // lưu ý: phần key của object pải giống name của input
+    
+    const __WEb_ROOT = document.querySelector('.__WEB_ROOT').value;
+
+    const boxMessError = {
+        kh_taikhoan: {
+            empty: "không được để trống !!",
+            format: "Không chứa dấu 'cách' !!",
+            exist: 'Tài khoản không tồn tại !!',
+            lengthMax: "Tên đăng nhập quá dài !!",
+            lengthMin: "Tên đăng nhập quá ngắn !!",
+        },
+        kh_matkhau: {
+            empty: "không được để trống !!",
+            lengthMax: `Mật khẩu quá dài !!`,
+            lengthMin: `Mật khẩu quá ngắn !!`,
+            match: `Mật khẩu không trùng khớp !!`,
+        },
+        default: "Không có thông báo ??",
+        getMess: function (key, type) {
+            return this[key][type] || this.default; // Trả về giá trị tương ứng hoặc giá trị mặc định
+        }
     }
 
-    const accRemember=JSON.parse(localStorage.getItem('acountSanny_r'))
-
-    if(accRemember){
-        listInput[0].value=accRemember.name
-        listInput[1].value=accRemember.pw
+    function showError(input, mess) {
+        const boxError = input.parentElement
+        if (boxError) {
+            const textError = boxError.querySelector(".erorr")
+            const lineError = boxError.querySelector(".line")
+            textError.innerHTML = mess
+            lineError.classList.add("active")
+        }
     }
 
-    $(".handle-value").click(function(){
-        let nameLogin = listInput[0].value;
-        let url = `./php/account/login.php?nameLogin=${nameLogin}`;
-        $(".check-login").load(url, function(response, status, xhr){
-            if (status === "success") {
-                 checkDatabase = response;
+    function showSuccess(input) {
+        const boxError = input.parentElement
+        if (boxError) {
+            const textError = boxError.querySelector(".erorr")
+            const lineError = boxError.querySelector(".line")
+            textError.innerHTML = ''
+            lineError.classList.remove("active")
+        }
+    }
+
+    function check_user_name_login(input, callback) {
+        $.post(`${__WEb_ROOT}/account/get_account`, { userNameLogin: input.value }, function (data) {
+            if (JSON.parse(data).length<=0) {
+                validate.kh_taikhoan=false
+                showError(input, boxMessError.getMess(input.name, 'exist'));
+                callback(false); // Gọi callback với giá trị false nếu tên người dùng đã tồn tại
             } else {
-                console.log("Đã xảy ra lỗi khi tải dữ liệu");
+                validate.kh_taikhoan=true
+                showSuccess(input);
+                callback((JSON.parse(data)[0])); // Gọi callback với giá trị true nếu tên người dùng là duy nhất
             }
         });
-    
-        return false;
-    });
+    }
 
-    listInput.forEach((items,index)=>{
-        items.addEventListener('focusout',e=>{
-           const check= validate.checkFill(items,'Không được để trống')
-           if(index==0 && check){
-                checkAccountLogin.click()
-                checkAccout(items)
+    const validate = {
+        kh_taikhoan: false,
+        kh_matkhau: false
+    }
+
+    const check = (listCheck) => {
+        return Object.values(listCheck).filter(items => items == false).length == 0
+    }
+
+    function check_password(input, password){
+        if(input.value!=password){
+            showError(input, boxMessError.getMess(input.name, 'match'));
+            return false;
+        }else{
+            showSuccess(input)
+            return true;
+        }
+    }
+
+    const btn_login = document.querySelector(".from-login .btn-login")
+    listInput[0].addEventListener("focusout",e=>{
+        check_user_name_login(listInput[0],function(value){})
+    })
+
+    btn_login.addEventListener("click", e => {
+        check_user_name_login(listInput[0], function (value) {
+            if(value){
+                validate.kh_matkhau = value.kh_matkhau
+                validate.kh_matkhau = check_password(listInput[1],validate.kh_matkhau)
+                if(check(validate)){
+                    const tag=document.createElement('input')
+                    tag.value=value.kh_id
+                    tag.name='kh_id'
+                    tag.type='hidden'
+                    alert("Đăng nhập thành công")
+                    document.querySelector(".from-login").appendChild(tag)
+                    document.querySelector(".from-login").submit()
+                }
             }
         })
     })
 
-    function checkAccout(input){
-        const acc=listAccount.filter(items=>items.name.trim()==input.value.trim())
-        if(acc.length==0){
-            if(checkDatabase!='1'){
-                validate.showErorr(input,'Tên đăng nhập không tồn tại')
-                return false
-            }
-        }else{
-            checkLogin.name=acc[0].name
-            validate.showSuccess(input)
-            return true
-        }
-    }
-
-    function checkPassword(input){
-        const value=listAccount.filter(items=>items.name.trim()==checkLogin.name.trim())
-        if(value.length>0){
-            if(input.value.trim()==value[0].password && input.value.trim()==checkDatabase){
-                checkLogin.pw=input.value.trim()
-                console.log(checkDatabase)
-                validate.showSuccess(input)
-                return true
-            }else{
-                validate.showErorr(input,'Sai mật khẩu')
-                return false
-            }
-        }else{
-            return false
-        }
-    }
-
-    btnLogin.addEventListener('click',e=>{
-        const login=checkPassword(listInput[1])
-        if(!login){
-            formLogin.onsubmit=function(){
-                return false
-            }
-        }else{
-            if(remember.checked){
-                localStorage.setItem('acountSanny_r',JSON.stringify(checkLogin))
-            }
-            formLogin.onsubmit=function(){
-                return true
-            }
-        }
-    })
 }
 login()

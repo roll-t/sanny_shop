@@ -1,0 +1,291 @@
+.header_link{
+    font-weight: 200;
+    display: flex;
+    gap: 10px;
+    padding:15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.138);
+}
+.header_link a{
+    color:rgba(0, 0, 0, 0.845);
+}
+.container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 5%;
+}
+.left{
+    padding-top: 10px;
+    padding-left:20%;
+}
+.left .slide{
+    display:grid;
+    grid-template-columns: 1.5fr 8fr;
+    height: 700px;
+
+}
+.left .slide .des-img{
+    height: 100%;
+    overflow-y: scroll;
+}
+.left .slide .des-img .list-items{
+    margin-bottom: 10px;
+    height: 150px;
+    opacity: .5;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left .slide .des-img .list-items.active{
+    opacity: 1;
+}
+.slide .main-display{
+    position: relative;
+    height: 700px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.main-display {
+    border-left: 1px solid #0000004c;
+
+}
+.main-display .control{
+    z-index: 100;
+    position: absolute;
+    right:5%;
+    top:50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+}
+.main-display .control ion-icon{
+    font-size: 30px;
+    cursor: pointer;
+    transition: .3s;
+    opacity: .6;
+}
+.main-display .control ion-icon:nth-child(1):hover{
+    transform: translateY(-20%);
+    opacity: 1;
+}
+.main-display .control ion-icon:nth-child(2):hover{
+    transform: translateY(20%);
+    opacity: 1;
+}
+.container{
+    z-index: -10;
+}
+.container .right{
+    background: #fbfbfb;
+    padding-inline:15% 15%;
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+    font-weight: 300;
+}
+.container .right .name-product{
+    font-size: 30px;
+    font-weight: 200;
+    text-transform:capitalize;
+}
+.container .right .product-price{
+    font-size: 20px;
+    font-weight: 200;
+    text-transform:capitalize;
+}
+.container .right .btn{
+    cursor: pointer;
+    padding:15px;
+    font-size: 15px;
+    border:none;
+}
+.container .right .btn.add-cart{
+    background: #f3f3f3;
+}
+.container .right .assess{
+    display: flex;
+    justify-content: space-between;
+}
+.container .right .assess a{
+    color: black;
+    font-weight: 400;
+}
+.container .right .btn.buy-now{
+    background: black;
+    color: white;
+    margin-bottom: 10px;
+}
+.select-color .list-color-product{
+    gap:15px;
+    display: flex;
+    margin-block:10px;
+    cursor: pointer;
+    z-index: 10;
+}
+.select-color .color-item{
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid #00000019;
+    cursor: pointer;
+}
+
+.select-color .color-item.active .border{
+    opacity: 1;
+    transition: 0s;
+    visibility: visible;
+    position: absolute;
+    width: 140%;
+    height: 140%;
+    background: inherit;
+    z-index: -1;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+.select-color .color-item.active .border::before{
+    content: "";
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    background: white;
+    z-index: 100;
+}
+.container .right .color{
+    margin-block:10px;
+    display: flex;
+    justify-content: space-between;
+}
+.container .right .size .head{
+    display: flex;
+    justify-content: space-between;
+}
+.container .right .voucher{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.container .right .voucher .head{
+    display: flex;
+    align-items: center;
+    gap:10px;
+}
+.container .right .size .select-size{
+    display: flex;
+    gap:20px;
+    margin-block: 10px;
+}
+.container .right .size .select-size .size-items{
+    border: 1px solid #0000004b;
+    padding:5px 20px;
+    cursor: pointer;
+}
+.container .right .quantity{
+    display: flex;
+    justify-content: space-between;
+
+}
+.container .right .quantity .control-quantity{
+    display: flex;
+    gap:15px;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid #00000000;
+}
+
+.container .right .quantity .control-quantity .btn{
+    border: 1px solid #00000000;
+}
+.container .right .quantity .number{
+    border:none;
+    background: transparent;
+    text-align: center;
+    width: 40px;
+    transform: translateX(10px);
+}
+
+.container .right .des-exten{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+.container .right .des-exten div{
+    display: flex;
+    flex-direction: column;
+    gap:3px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.container .right .des-exten div span:nth-child(2){
+    font-size: 12px;
+    font-weight: 300;
+}
+
+.select-size .size-items.active{
+    background: #000;
+    color:white;
+}
+
+.right-side{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top:0;
+    left: 0;
+    background: #00000058;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.right-side.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.right-side .main{
+    position: absolute;
+    right: -100%;
+    top:0;
+    background: white;
+    height: 100%;
+    width: 40%;
+    padding:10px 2%;
+    z-index: 2;
+}
+
+.right-side.active .main{
+    position: absolute;
+    right: 0;
+    top:0;
+}
+
+.right-side .main .head{
+    display: flex;
+    align-items: center;
+    gap:20px;
+    padding-bottom:10px;
+}
+
+.right-side .main .head .icon-close{
+        margin-bottom: -4px;
+        cursor: pointer;
+}
+.right-side .space-close{
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    cursor: pointer;
+}

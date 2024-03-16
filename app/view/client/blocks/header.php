@@ -35,10 +35,10 @@
         <div class="site-header ">
             <nav class="menu">
                 <li class="menu-item">
-                    <a href="#">Trang chủ</a>
+                    <a href="<?php echo _WEB_ROOT ?>/home">Trang chủ</a>
                 </li>
                 <li class="menu-item">
-                    <a href="#">Sản phẩm</a>
+                    <a href="<?php echo _WEB_ROOT ?>/product">Sản phẩm</a>
                     <ion-icon name="chevron-down-outline"></ion-icon>
                     <div class="menu-level-2">
                         <div class="menu-level-2-items">
@@ -87,8 +87,8 @@
                 </li>
             </nav>
             <div class="logo">
-                <a href="">
-                    <img src="<?php echo _WEB_ROOT?>/public/client/img/logo/logo.png" alt="">
+                <a href="<?php echo _WEB_ROOT ?>/home">
+                    <img src="<?php echo _WEB_ROOT ?>/public/client/img/logo/logo.png" alt="">
                 </a>
             </div>
             <div class="action">
@@ -98,9 +98,24 @@
                         <button><ion-icon name="search-outline"></ion-icon></button>
                     </form>
                 </div>
-                <div class="action-item to-profile">
 
-                    <a href="#"><ion-icon name="person-outline"></ion-icon></a>
+                <div class="action-item to-profile">
+                    <?php
+                    if (!empty($user_login)) {
+                        echo '<div class="li">
+                                    <a href="' . _WEB_ROOT . '/profile"><ion-icon name="person"></ion-icon></a>
+                                    <div class="fast-select">
+                                        <div class="items"><a href="#">Tài khoản</a></div>
+                                        <div class="items"><a href="#">Đơn mua</a></div>
+                                        <div class="items"><a href="#">Đăng Xuất</a></div>
+                                    </div>
+                                </div>';
+                    } else {
+                        echo '<i class=" material-icons text-dark cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="No account">
+                                    <a href="' . _WEB_ROOT . '/account"><ion-icon name="person-outline"></ion-icon></a>
+                              </i>';
+                    }
+                    ?>
 
                 </div>
                 <div class="action-item">
@@ -126,13 +141,15 @@
                     <p class="sum-price">0</p><span>VND</span>
                 </div>
             </div>
-            <div class="list-product-cart">
-            </div>
-            <div class="checkout">
-                <a href="#">
-                    Thanh toán
-                </a>
-            </div>
+            <form method="post" action="<?php echo _WEB_ROOT . '/order' ?>">
+                <div class="list-product-cart">
+                </div>
+
+                <div class="checkout">
+                    <button type="submit">Thanh toán</button>
+                </div>
+            </form>
         </div>
+
     </div>
 </header>

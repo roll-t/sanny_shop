@@ -40,6 +40,15 @@
                                 <?php render_option($materials, 'cl_ten', 'cl_id') ?>
                             </select>
                         </div>
+                        <div class="group-input color">
+                            <label for="material">Color</label>
+                            <select name="m_id">
+                                <option selected disabled value="<?php echo !empty($product_edit['m_id']) ? $product_edit['m_id'] : "" ?>">
+                                    <?php echo !empty($product_edit['m_ten']) ? $product_edit['m_ten'] : "" ?>
+                                </option>
+                                <?php render_option($colors, 'm_ten', 'm_id') ?>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="group-input">
@@ -53,24 +62,6 @@
                                         <input  ' . ($isChecked ? 'checked' : '') . ' class="form-check-input" name="size[]" type="checkbox" value="' . $size['s_id'] . '">
                                         <label for="size">Size ' . $size['s_ten'] . '</label>
                                         </div>';
-                                }
-                            }
-                            ?>
-                        </div>
-                    </div>
-
-                    <div class="group-input">
-                        <label for="color">Color</label>
-                        <div class="list-check list-check-color">
-                            <?php
-                            if (!empty($colors)) {
-                                foreach ($colors as $color) {
-
-                                    $isChecked  = in_array($color['m_id'], array_column($color_product, 'm_id'));
-                                    echo '<div class="check_">
-                                    <input ' . ($isChecked ? 'checked' : '') . ' class="form-check-input" name="color[]" type="checkbox" value="' . $color['m_id'] . '">
-                                    <label for="color">' . $color['m_ten'] . '</label>
-                                    </div>';
                                 }
                             }
                             ?>
